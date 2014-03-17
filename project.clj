@@ -1,4 +1,4 @@
-(defproject sudoku_solver "0.1.0-SNAPSHOT"
+(defproject sudoku_solver "1.1.0"
   :description "Sudoku Solver Kata"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
