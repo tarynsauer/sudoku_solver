@@ -42,11 +42,11 @@
 
   (it "returns true if value equals zero"
     (should= true 
-      (open-space "0")))
+      (open-space ["1" "0" "6"] 1)))
 
   (it "returns false if value does not equal zero"
     (should= false 
-      (open-space "1")))
+      (open-space ["1" "2" "3"] 1)))
 
   (it "returns false if board contains 0 spaces"
     (should= false 
@@ -55,6 +55,11 @@
   (it "returns true if board contains 0 spaces"
     (should= true 
       (solved '("5" "1" "2" "4" "9"))))
+
+  (let [board (get-board "105802000090076405200400819019007306762083090000061050007600030430020501600308900")]
+    (it "returns true for empty cell"
+      (should= true 
+        (open-space board 12))))
 
   (let [board (get-board "105802000090076405200400819019007306762083090000061050007600030430020501600308900")]
     (it "returns all row 0 values"
@@ -111,7 +116,13 @@
       (should= true 
         (make-move board 12))))
 
+(let [board (get-board "105802000090076405200400819019007306762083090000061050007600030430020501600308900")]
+    (it "returns updated board when a move can be made"
+      (should= ["1" "0" "5" "8" "0" "2" "0" "0" "0" "0" "9" "0" "1" "7" "6" "4" "0" "5" "2" "0" "0" "4" "0" "0" "8" "1" "9" "0" "1" "9" "0" "0" "7" "3" "0" "6" "7" "6" "2" "0" "8" "3" "0" "9" "0" "0" "0" "0" "0" "6" "1" "0" "5" "0" "0" "0" "7" "6" "0" "0" "0" "3" "0" "4" "3" "0" "0" "2" "0" "5" "0" "1" "6" "0" "0" "3" "0" "8" "9" "0" "0"] 
+        (make-move-if-possible board 12))))
 
-)
- 
-  
+(let [board (solve "105802000090076405200400819019007306762083090000061050007600030430020501600308900")]
+    (it "returns solved board"
+      (should= ["1" "4" "5" "8" "9" "2" "6" "7" "3"  "8" "9" "3" "1" "7" "6" "4" "2" "5" "2" "7" "6" "4" "3" "5" "8" "1" "9" "5" "1" "9" "2" "4" "7" "3" "8" "6" "7" "6" "2" "5" "8" "3" "1" "9" "4" "3" "8" "4" "9" "6" "1" "7" "5" "2" "9" "5" "7" "6" "1" "4" "2" "3" "8" "4" "3" "8" "7" "2" "9" "5" "6" "1" "6" "2" "1" "3" "5" "8" "9" "4" "7"]
+        (do board))))
+) 

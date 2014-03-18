@@ -2,6 +2,8 @@
 (:require [clojure.string :refer [blank? split]])
 (:require [clojure.set :refer [difference]]))
 
+(declare try-each-cell)
+
 (def options #{"1" "2" "3" "4" "5" "6" "7" "8" "9"})
 
 (defn get-board [puzzle]
@@ -22,8 +24,8 @@
 (defn box-starting-index [index]
   (+ (* 27 (box-row-number index)) (* 3 (box-col-number index))))
 
-(defn open-space [value] 
-  (= value "0"))
+(defn open-space [board index] 
+  (= (get (vec board) index) "0"))
 
 (defn solved [board] 
   (nil? (some #{"0"} board)))
@@ -56,16 +58,22 @@
 (defn make-move [board, index]
   (= (count (possible-moves board index)) 1))
 
-(defn make-move-if-possible [board, index, move]
-  (if (and (open-space board, index) (make-move board, index))
-    (place-value-on-board board index)))
+(defn make-move-if-possible [board, index]
+  (if (and (open-space board index) (make-move board index))
+    (place-value-on-board board index)
+    (do board)))
 
 (defn solve [puzzle]
   (let [board (get-board puzzle)]
     (loop [board board index 0]
-      (let [board board] 
-        (for [cell board] (make-move-if-possible board (inc index)))
-         (print board)
+      (let [board (try-each-cell board index)]
          (if (solved board)
-            (println board)
-            (recur board 0)))))) 
+            (do board)
+            (recur board 0))))))
+
+(defn try-each-cell [board index]
+  (loop [board board index index]
+    (let [board (make-move-if-possible board index)]
+      (if (= index 80)
+        (do board)
+        (recur board (inc index))))))
